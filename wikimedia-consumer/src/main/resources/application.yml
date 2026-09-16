@@ -1,0 +1,31 @@
+server:
+  # Servicio separado para que se vea que producer y consumer pueden escalar de forma independiente.
+  port: 8081
+
+springdoc:
+  swagger-ui:
+    # Swagger de este servicio: http://localhost:8081/swagger-ui.html
+    path: /swagger-ui.html
+spring:
+  # Servicio separado de la API: su puerto expone la proyección en MySQL.
+  application.name: wikimedia-consumer
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    consumer:
+      # Todos los consumers con este id comparten el mismo offset y se reparten particiones.
+      group-id: wikimedia-database-group
+      # Permite importar el histórico si el grupo todavía no había consumido este topic.
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  datasource:
+    # Variables de entorno hacen que el mismo artefacto funcione en Docker, local o CI.
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/wikimedia}
+    username: ${MYSQL_USER:kafka}
+    password: ${MYSQL_PASSWORD:kafka}
+  jpa:
+    # Conveniente para el laboratorio; en producción se prefieren migraciones versionadas.
+    hibernate.ddl-auto: update
+    open-in-view: false
+# Debe coincidir exactamente con el topic que declara y publica wikimedia-producer.
+app.topic: wikimedia.recentchange.v1

@@ -1,0 +1,21 @@
+# Salida de Maven y archivos generados: se regeneran con mvnw.cmd.
+target/
+*.log
+*.pid
+
+# Maven descargado por mvnw.cmd en la primera ejecución. Es caché local, no código fuente.
+.mvn/apache-maven-*/
+.mvn.zip
+
+# IDEs y sistema operativo.
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Datos y configuración estrictamente locales. Nunca subir secretos reales.
+.env
+.env.*
+!.env.example
+data/

@@ -1,0 +1,8 @@
+server.port: 8082 # Puerto separado: estos labs no se activan junto con la API básica.
+spring:
+  application.name: advanced-labs
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    # El application id equivale al consumer group y al namespace de estado de Kafka Streams.
+    streams.application-id: advanced-labs-streams
+app.kafka.bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}

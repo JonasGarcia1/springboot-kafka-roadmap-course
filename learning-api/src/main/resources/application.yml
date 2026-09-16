@@ -1,0 +1,25 @@
+server:
+  # Puerto HTTP de la práctica REST; Kafka escucha en otro proceso/puerto.
+  # SERVER_PORT permite abrir una segunda instancia para practicar rebalanceo sin editar el archivo.
+  port: ${SERVER_PORT:8080}
+spring:
+  kafka:
+    # KafkaAdmin de Spring Boot usa esta propiedad al crear los NewTopic declarados abajo.
+    # El host expone 29092; 9092 solo existe dentro de la red Docker.
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+app:
+  kafka:
+    # La variable de entorno permite cambiar de Docker local a otro cluster sin recompilar.
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    topics:
+      # Un contrato simple: topic distinto para cada formato de mensaje del laboratorio.
+      text: learning.text.v1
+      users: learning.users.v1
+      keyed-events: learning.keyed-events.v1
+logging:
+  level:
+    com.interviewlab.learning: INFO
+springdoc:
+  swagger-ui:
+    # Acceso estable desde la plataforma; Springdoc también sirve /v3/api-docs.
+    path: /swagger-ui.html

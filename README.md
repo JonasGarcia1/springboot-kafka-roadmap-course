@@ -26,6 +26,8 @@ El curso web incluye enlaces hacia [Swagger de la API de práctica](http://local
 | Maven / Spring Boot / Kafka / MySQL | **No instalar globalmente.** Maven se descarga localmente con `mvnw.cmd`; el resto se ejecuta en Docker. |
 | Postman | Opcional para las APIs REST. |
 
+> En la primera ejecución, `mvnw.cmd` descarga Maven dentro de `.mvn/apache-maven-*`. Esa carpeta es una caché local y está ignorada por Git; solo subí `mvnw.cmd`.
+
 ## Arquitectura
 
 ```mermaid

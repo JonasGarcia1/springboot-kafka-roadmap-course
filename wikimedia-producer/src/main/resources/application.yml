@@ -1,0 +1,14 @@
+spring:
+  # Identidad visible en logs y, en producción, métricas/tracing.
+  application.name: wikimedia-producer
+  # local publica un evento controlado; wikimedia conecta al stream SSE real.
+  profiles.default: local
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+app:
+  # El contrato del canal compartido con wikimedia-consumer.
+  topic: wikimedia.recentchange.v1
+  wikimedia-url: https://stream.wikimedia.org/v2/stream/recentchange

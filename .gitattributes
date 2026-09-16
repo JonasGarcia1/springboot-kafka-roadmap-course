@@ -1,0 +1,9 @@
+# Evita diffs ruidosos entre Windows y otros sistemas al colaborar en GitHub.
+* text=auto
+*.java text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.ps1 text eol=crlf

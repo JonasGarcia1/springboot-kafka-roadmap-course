@@ -1,0 +1,53 @@
+services:
+  # ZooKeeper coordina el modo legado de Kafka 3.9 usado exclusivamente para seguir el curso.
+  zookeeper:
+    image: zookeeper:3.9.3-jre-17
+    environment:
+      ZOO_4LW_COMMANDS_WHITELIST: ruok,stat,mntr
+    ports:
+      - "2181:2181"
+    volumes:
+      - zookeeper-data:/data
+
+  kafka:
+    build: ./docker/kafka-zookeeper
+    # La imagen oficial ejecuta Kafka como usuario sin privilegios, pero Docker Desktop
+    # crea este volumen con otro propietario. Root evita el choque de permisos local.
+    # No es una configuración recomendada para producción.
+    user: "0:0"
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    volumes:
+      - kafka-data:/tmp/kafka-logs
+
+  mysql:
+    # Persistencia final del caso Wikimedia; los datos viven en el volumen mysql-data.
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: wikimedia
+      MYSQL_USER: kafka
+      MYSQL_PASSWORD: kafka
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  kafka-ui:
+    # Herramienta visual de estudio: inspecciona topics, particiones, mensajes y consumer groups.
+    image: provectuslabs/kafka-ui:v0.7.2
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: laboratorio-zookeeper
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    ports:
+      - "8088:8080"
+
+volumes:
+  zookeeper-data:
+  kafka-data:
+  mysql-data:
